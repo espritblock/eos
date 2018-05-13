@@ -24,19 +24,56 @@
 	
 	pip install docker-compose
 	
-check docker docker-compose
+3.check docker docker-compose
 
 	docker version
 	
 	docker-compose -version
 
+4.git
+
+	yum install -y git
+
 # Run Eos
 
-	wget https://github.com/smartblock18/eos.git
+	git clone https://github.com/smartblock18/eos.git
 	
 	cd eos
 	
+	chmod 777 *
+	
 	./up.sh
+	
+# Use
+
+	1.get info
+	
+		docker exec -i -t eos_nodeos_1 cleos get info
+	
+	2.sub account
+	
+		docker exec -i -t eos_nodeos_1 cleos get servants eosio
+		
+	3.create token ABC
+		
+		// set eosio.token contract to eosio
+		docker exec -i -t eos_nodeos_1 cleos set contract eosio /contracts/eosio.token -p eosio
+		
+		// create token 
+		docker exec -i -t eos_nodeos_1 cleos push action eosio create '[ "eosio", "1000000000.0000 ABC", 0, 0, 0]' -p eosio
+		
+		// issue token to eosio
+		docker exec -i -t eos_nodeos_1 cleos push action eosio issue '[ "eosio", "1000000000.0000 ABC", "memo" ]' -p eosio
+		
+		// eosio balance
+		docker exec -i -t eos_nodeos_1 cleos get currency balance eosio eosio
+		
+		// transfer
+		docker exec -i -t eos_nodeos_1 cleos push action eosio transfer '["eosio","inita","100.0000 ABC","mome"]' -p eosio
+		
+		// inita balance
+		docker exec -i -t eos_nodeos_1 cleos get currency balance eosio inita
+		
 
 # Other
 
