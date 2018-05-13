@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  nodeos:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${EOSIO_IMAGE-eosio/eos:DAWN-2018-04-23-ALPHA}
+    command: /opt/eosio/bin/nodeosd.sh
+    ports:
+      - 8888:8888
+      - 9876:9876
+    expose:
+      - "8888"
