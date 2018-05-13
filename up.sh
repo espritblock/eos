@@ -13,7 +13,7 @@ docker-compose down
 docker-compose pull
 
 # Start the server for testing
-docker-compose up -d
+docker-compose up -d --build
 docker-compose logs -f | egrep -v 'eosio generated block' &
 
 cleos wallet create -n test
