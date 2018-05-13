@@ -4,13 +4,13 @@
 
 # System & Version
 
- require CentOs 7.x
+ require CentOs 7.x ,1 CPU,2G Memory
 
- use eos vrsion DAWN-2018-04-23-ALPHA
+ use eos version DAWN-2018-04-23-ALPHA
  
  You can find the current stable branch of eos here: https://github.com/EOSIO/eosjs.git
 
-# Environmental Installation
+# Environment Installation
 
 1.docker install
 
