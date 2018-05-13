@@ -77,7 +77,7 @@
 
 # Other
 
-	config docker aliyun image source 
+	config docker image source 
 	
 	vi /etc/sysconfig/docker
 	
