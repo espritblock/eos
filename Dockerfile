@@ -1,3 +1,3 @@
-FROM eosio/eos:dawn-v4.0.0
+FROM eosio/eos:20180516
 
 COPY config.ini genesis.json /
