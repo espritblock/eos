@@ -66,11 +66,11 @@ chmod 777 *
 # Use
 
 ```
-get info
+# get info
 	
 docker exec eos_keosd_1 cleos -u http://nodeosd:8888 get info
 		
-create token ABC
+# create token ABC
 	
 // set eosio.token contract to eosio
 docker exec eos_keosd_1 cleos -u http://nodeosd:8888 set contract eosio.token /contracts/eosio.token -p eosio.token
