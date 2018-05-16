@@ -85,3 +85,6 @@
 	
 	sudo systemctl restart docker
 	
+# join eos open source 
+
+	wechat hl_294944589
