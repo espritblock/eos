@@ -95,18 +95,18 @@ docker exec eos_keosd_1 cleos -u http://nodeosd:8888 get currency balance eosio.
 # Other
 
 
-	config docker image source 
+config docker image source 
 
 ```
 	
-	vi /etc/sysconfig/docker
+vi /etc/sysconfig/docker
 	
-	OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false --registry-mirror=http://abcd1234.m.daocloud.io'
+OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false --registry-mirror=http://abcd1234.m.daocloud.io'
 	
-	sudo systemctl restart docker
+sudo systemctl restart docker
 	
 ```
 	
 # join eos open source 
 
-	wechat hl_294944589
+wechat hl_294944589
