@@ -6,7 +6,7 @@
 
  require CentOs 7.x ,1 CPU,2G Memory
 
- use eos version DAWN-2018-04-23-ALPHA
+ use eos version dawn4
  
  You can find the current stable branch of eos here: https://github.com/EOSIO/eosjs.git
 
