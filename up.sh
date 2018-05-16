@@ -3,7 +3,7 @@ set -o errexit
 set -o xtrace
 
 function cleos() {
-  docker exec docker_keosd_1 cleos -u http://nodeosd:8888 "$@"
+  docker exec docker_keosd_1 cleos -u http://127.0.0.1:8888 "$@"
 }
 
 # Reset the volumes
