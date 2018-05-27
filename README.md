@@ -1,12 +1,12 @@
 # EOS
  
- fast run eos node
+ fast run eos node upgrade to 4.2
 
 # System & Version
 
  require CentOs 7.x ,1 CPU,2G Memory
 
- use eos version dawn4:20180516
+ use eos version dawn4.2:20180526
  
  You can find the current stable branch of eos here: https://github.com/EOSIO/eosjs.git
 
