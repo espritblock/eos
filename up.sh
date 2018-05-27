@@ -74,7 +74,7 @@ cleos set contract eosio contracts/eosio.system -p eosio@active
 # Non-privileged operations (after lockdown)
 
 # SYS (main token)
-cleos transfer eosio.token eosio '100000 SYS'
+cleos transfer eosio.token eosio '900000000.0000 SYS'
 cleos transfer eosio.token inita '100000 SYS'
 cleos transfer eosio.token initb '100000 SYS'
 cleos transfer eosio.token initc '100000 SYS'
