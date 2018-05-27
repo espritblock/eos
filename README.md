@@ -69,11 +69,6 @@ chmod 777 *
 # get info
 	
 docker exec eos_keosd_1 cleos -u http://nodeosd:8888 get info
-		
-# create token ABC
-	
-// set eosio.token contract to eosio
-docker exec eos_keosd_1 cleos -u http://nodeosd:8888 set contract eosio.token /contracts/eosio.token -p eosio.token
 	
 // create token 
 docker exec eos_keosd_1 cleos -u http://nodeosd:8888 push action eosio.token create '[ "eosio", "1000000000.0000 ABC", 0, 0, 0]' -p eosio.token
