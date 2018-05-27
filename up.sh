@@ -6,7 +6,22 @@ set -o xtrace
 
 echo "127.0.0.1 nodeosd" >> /etc/hosts
 
-./dockrc.sh
+export owner_pubkey=EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+export active_pubkey=EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+
+function keosd() {
+  docker exec docker_keosd_1 "$@"
+}
+
+function cleos() {
+  keosd cleos -u http://nodeosd:8888 "$@"
+}
+
+function newaccount() {
+  cleos system newaccount\
+    --stake-net "10 SYS" --stake-cpu "100 SYS" --buy-ram-bytes 256\
+    "$@"
+}
 
 # Reset the volumes
 docker-compose down
