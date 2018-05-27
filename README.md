@@ -69,10 +69,6 @@ chmod 777 *
 # get info
 	
 docker exec eos_keosd_1 cleos -u http://nodeosd:8888 get info
-
-# create account
-	
-docker exec eos_keosd_1 cleos -u http://nodeosd:8888 create account
 		
 # create token ABC
 	
