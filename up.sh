@@ -6,7 +6,7 @@ set -o xtrace
 
 echo "127.0.0.1 nodeosd" >> /etc/hosts
 
-. ./dockrc.sh
+./dockrc.sh
 
 # Reset the volumes
 docker-compose down
