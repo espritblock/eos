@@ -2,65 +2,64 @@
 set -o errexit
 set -o xtrace
 
-function cleos() {
-  docker exec eos_keosd_1 cleos -u http://nodeosd:8888 "$@"
-}
-
 # set hosts 
 
 echo "127.0.0.1 nodeosd" >> /etc/hosts
 
+. ./dockrc.sh
+
 # Reset the volumes
 docker-compose down
 
-# Update image
+# Update docker
 #docker-compose pull
 
 # Start the server for testing
 docker-compose up -d --build
 docker-compose logs -f | egrep -v 'Produced block 0' &
-
 sleep 2
 
 cleos wallet create
 
-# Root key need not be imported
-# cleos wallet import 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
+# Create accounts must happen before eosio.system is installed
 
-# create accounts
-cleos create account eosio inita EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
-cleos create account eosio initb EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
-cleos create account eosio initc EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+# Test accounts (for eosjs)
+cleos create account eosio inita $owner_pubkey $active_pubkey
+cleos create account eosio initb $owner_pubkey $active_pubkey
+cleos create account eosio initc $owner_pubkey $active_pubkey
 
-# setup contracts
-function deploy_contract() {
-  name=$1
-  contract=${2-$name}
+# System accounts for Nodeosd
+cleos create account eosio eosio.bpay $owner_pubkey $active_pubkey
+cleos create account eosio eosio.msig $owner_pubkey $active_pubkey
+cleos create account eosio eosio.names $owner_pubkey $active_pubkey
+cleos create account eosio eosio.ram $owner_pubkey $active_pubkey
+cleos create account eosio eosio.ramfee $owner_pubkey $active_pubkey
+cleos create account eosio eosio.saving $owner_pubkey $active_pubkey
+cleos create account eosio eosio.stake $owner_pubkey $active_pubkey
+cleos create account eosio eosio.token $owner_pubkey $active_pubkey
+cleos create account eosio eosio.vpay $owner_pubkey $active_pubkey
 
-  cleos create account eosio $name EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+# Deploy, create and issue SYS token to eosio.token
+# cleos create account eosio eosio.token $owner_pubkey $active_pubkey
+cleos set contract eosio.token contracts/eosio.token -p eosio.token@active
+cleos push action eosio.token create '{"issuer":"eosio.token", "maximum_supply": "1000000000.0000 SYS"}' -p eosio.token@active
+cleos push action eosio.token issue '{"to":"eosio.token", "quantity": "1000000000.0000 SYS", "memo": "issue"}' -p eosio.token@active
 
-  # publish smart contract
-  cleos set contract $name contracts/$contract -p $name@active
-}
+# Deprecated: `currency` will be replaced by `currency3.14` below
+cleos create account eosio currency $owner_pubkey $active_pubkey
+cleos set contract currency contracts/eosio.token -p currency@active
+cleos push action currency create '{"issuer":"currency", "maximum_supply": "1000000000.0000 CUR"}' -p currency@active
+cleos push action currency issue '{"to":"currency", "quantity": "1000000000.0000 CUR", "memo": "issue"}' -p currency@active
 
-deploy_contract eosio.bios
-deploy_contract eosio.msig
-deploy_contract eosio.system
-deploy_contract eosio.token
-deploy_contract currency eosio.token
+# eosio.* accounts  allowed only before lockdown
 
-# issue new tokens
-cleos push action eosio.token create '{"issuer":"eosio.token", "maximum_supply": "1000000.0000 EOS", "can_freeze": 0, "can_recall": 0, "can_whitelist": 0}' -p eosio.token@active
-cleos push action eosio.token issue '{"to":"eosio.token", "quantity": "1000.0000 EOS", "memo": ""}' -p eosio.token@active
-cleos push action eosio.token issue '{"to":"inita", "quantity": "1000.0000 EOS", "memo": ""}' -p eosio.token@active
-cleos push action eosio.token issue '{"to":"initb", "quantity": "1000.0000 EOS", "memo": ""}' -p eosio.token@active
-cleos push action eosio.token issue '{"to":"initc", "quantity": "1000.0000 EOS", "memo": ""}' -p eosio.token@active
-cleos push action eosio.token issue '{"to":"eosio", "quantity": "1000.0000 EOS", "memo": ""}' -p eosio.token@active
+# Lockdown (deploy eosio.system or eosio.bios to the eosio account)
+cleos set contract eosio contracts/eosio.system -p eosio@active
 
-cleos push action eosio.token create '{"issuer":"eosio.token", "maximum_supply": "1000000.0000 CUR", "can_freeze": 1, "can_recall": 1, "can_whitelist": 1}' -p eosio.token@active
-cleos push action eosio.token issue '{"to":"inita", "quantity": "100000.0000 CUR", "memo": ""}' -p eosio.token@active
-cleos push action eosio.token issue '{"to":"initb", "quantity": "100000.0000 CUR", "memo": ""}' -p eosio.token@active
+# Non-privileged operations (after lockdown)
 
-cleos push action currency create '{"issuer":"currency", "maximum_supply": "1000000.0000 CUR", "can_freeze": 0, "can_recall": 0, "can_whitelist": 0}' -p currency@active
-cleos push action currency issue '{"to":"inita", "quantity": "100000.0000 CUR", "memo": ""}' -p currency@active
-cleos push action currency issue '{"to":"initb", "quantity": "100000.0000 CUR", "memo": ""}' -p currency@active
+# SYS (main token)
+cleos transfer eosio.token eosio '100000 SYS'
+cleos transfer eosio.token inita '100000 SYS'
+cleos transfer eosio.token initb '100000 SYS'
+cleos transfer eosio.token initc '100000 SYS'
