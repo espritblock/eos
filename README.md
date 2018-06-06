@@ -26,9 +26,9 @@ sudo systemctl start docker
 
 ```
 
-yum -y install python-pip
+sudo yum -y install python-pip
 
-pip install docker-compose
+sudo pip install docker-compose
 	
 ```
 	
@@ -36,9 +36,9 @@ pip install docker-compose
 
 ```
 
-docker version
+sudo docker version
 
-docker-compose -version
+sudo docker-compose -version
 
 ```
 
@@ -46,7 +46,7 @@ docker-compose -version
 
 ```
 
-yum install -y git
+sudo yum install -y git
 	
 ```
 
@@ -57,9 +57,9 @@ git clone https://github.com/smartblock18/eos.git
 
 cd eos
 
-chmod 777 *
+sudo chmod 777 *
 
-./up.sh
+sudo ./up.sh
 	
 ```
 
@@ -68,22 +68,22 @@ chmod 777 *
 ```
 # get info
 	
-docker exec eos_keosd_1 cleos -u http://nodeosd:8888 get info
+sudo docker exec eos_keosd_1 cleos -u http://nodeosd:8888 get info
 	
 // create token 
-docker exec eos_keosd_1 cleos -u http://nodeosd:8888 push action eosio.token create '[ "eosio", "1000000000.0000 ABC", 0, 0, 0]' -p eosio.token
+sudo docker exec eos_keosd_1 cleos -u http://nodeosd:8888 push action eosio.token create '[ "eosio", "1000000000.0000 ABC", 0, 0, 0]' -p eosio.token
 	
 // issue token to eosio
-docker exec eos_keosd_1 cleos -u http://nodeosd:8888 push action eosio.token issue '[ "eosio", "1000000000.0000 ABC", "memo" ]' -p eosio
+sudo docker exec eos_keosd_1 cleos -u http://nodeosd:8888 push action eosio.token issue '[ "eosio", "1000000000.0000 ABC", "memo" ]' -p eosio
 	
 // eosio balance
-docker exec eos_keosd_1 cleos -u http://nodeosd:8888 get currency balance eosio.token eosio
+sudo docker exec eos_keosd_1 cleos -u http://nodeosd:8888 get currency balance eosio.token eosio
 	
 // transfer
-docker exec eos_keosd_1 cleos -u http://nodeosd:8888 push action eosio.token transfer '["eosio","inita","100.0000 ABC","mome"]' -p eosio
+sudo docker exec eos_keosd_1 cleos -u http://nodeosd:8888 push action eosio.token transfer '["eosio","inita","100.0000 ABC","mome"]' -p eosio
 	
 // inita balance
-docker exec eos_keosd_1 cleos -u http://nodeosd:8888 get currency balance eosio.token inita
+sudo docker exec eos_keosd_1 cleos -u http://nodeosd:8888 get currency balance eosio.token inita
 		
 ```
 
