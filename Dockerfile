@@ -1,2 +1,2 @@
-FROM eosio/eos:20180526
-COPY config.ini genesis.json /
+FROM eosio/eos:v1.0.1
+COPY config.ini /
