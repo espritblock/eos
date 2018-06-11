@@ -2,14 +2,14 @@ version: "3"
 
 services:
   nodeosd:
-    image: johnnyzhao/eos:1.0.2.2
+    image: eosio/eos:20180611
     build:
       context: .
       dockerfile: Dockerfile
       #args:
       #  branch: master
 
-    command: /opt/eosio/bin/nodeosd.sh --max-transaction-time=3000 --data-dir /opt/eosio/bin/data-dir -e
+    command: /opt/eosio/bin/nodeosd.sh --max-transaction-time=3000 --data-dir /opt/eosio/bin/data-dir --config-dir / --genesis-json /genesis.json -e
     hostname: nodeosd
     ports:
       - 8888:8888
@@ -18,7 +18,7 @@ services:
       - "8888"
 
   keosd:
-    image: johnnyzhao/eos:1.0.2.2
+    image: eosio/eos:20180611
     command: /opt/eosio/bin/keosd --wallet-dir /opt/eosio/bin/data-dir --http-server-address=0.0.0.0:8900
     hostname: keosd
     ports:
