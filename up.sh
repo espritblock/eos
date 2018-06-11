@@ -2,15 +2,11 @@
 set -o errexit
 set -o xtrace
 
-# set hosts 
-echo "127.0.0.1 nodeosd" >> /etc/hosts
-
-# Reset the volumes
-docker-compose down
-
-# Update docker
-#docker-compose pull
-
-# Start the server for testing
-docker-compose up -d --build
-docker-compose logs -f | egrep -v 'Produced block 0' &
+docker run -ti --detach --name full-node \
+       -v `pwd`:/etc/nodeos -v /tmp/nodeos-data:/data \
+       -p 8888:8888 -p 9876:9876 \
+       johnnyzhao/eos:1.0.2.2 \
+       /opt/eosio/bin/nodeos --data-dir=/data \
+                             --config-dir=`pwd` \
+                             --genesis-json=`pwd`/genesis.json \
+                             --p2p-listen-endpoint=127.0.0.1:65432
