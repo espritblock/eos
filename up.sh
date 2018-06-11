@@ -2,7 +2,7 @@
 set -o errexit
 set -o xtrace
 
-docker run -ti --detach --name full-node \
+docker run -ti --detach --name eos-node \
        -v `pwd`:/etc/nodeos -v /tmp/nodeos-data:/data \
        -p 8888:8888 -p 9876:9876 \
        johnnyzhao/eos:1.0.2.2 \
