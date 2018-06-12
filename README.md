@@ -1,6 +1,6 @@
 # EOS
  
- fast run eos node upgrade to eosio 1.0.2 connect main net
+ fast run eos node upgrade to eosio 1.0.2
 
 # System & Version
 
