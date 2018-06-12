@@ -70,8 +70,6 @@ sudo ./up.sh
 	
 sudo docker exec eos_keosd_1 cleos -u http://nodeosd:8888 get info
 
-main net£ºchain_id=aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906
-	
 // create token 
 sudo docker exec eos_keosd_1 cleos -u http://nodeosd:8888 push action eosio.token create '[ "eosio", "1000000000.0000 ABC", 0, 0, 0]' -p eosio.token
 	
